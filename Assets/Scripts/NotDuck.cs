@@ -19,6 +19,9 @@ public class NotDuck : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+    
+        //TODO: do better
+        jumping = true; // After the start screen jump
     }
 
     private void FixedUpdate()
@@ -45,5 +48,6 @@ public class NotDuck : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         gameOverObject.SetActive(true);
+        lost = true;
     }
 }
