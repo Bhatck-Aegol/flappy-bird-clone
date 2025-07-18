@@ -2,13 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class NotDuck : MonoBehaviour
 {
     private Rigidbody2D rb;
     private bool jumping;
+    private bool lost;
+    
     [SerializeField] float jumpForce;
     [SerializeField] float rotationAmount;
+    
+    [SerializeField] GameObject gameOverObject;
     
     // Start is called before the first frame update
     void Start()
@@ -18,7 +23,7 @@ public class NotDuck : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (jumping) 
+        if (jumping && !lost) 
         {
             rb.velocity = Vector2.up * jumpForce;
             jumping = false;
@@ -31,9 +36,14 @@ public class NotDuck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !lost)
         {
             jumping = true;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        gameOverObject.SetActive(true);
     }
 }
