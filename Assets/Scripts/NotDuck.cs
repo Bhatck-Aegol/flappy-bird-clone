@@ -8,6 +8,7 @@ public class NotDuck : MonoBehaviour
     private Rigidbody2D rb;
     private bool jumping;
     [SerializeField] float jumpForce;
+    [SerializeField] float rotationAmount;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,9 @@ public class NotDuck : MonoBehaviour
             rb.velocity = Vector2.up * jumpForce;
             jumping = false;
         } 
+        
+        // Update notDuck rotation
+        rb.rotation = rb.velocity.y * rotationAmount;
     }
 
     // Update is called once per frame
