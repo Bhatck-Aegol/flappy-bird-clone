@@ -8,7 +8,7 @@ public class NotDuck : MonoBehaviour
 {
     private Rigidbody2D rb;
     private bool jumping;
-    private bool lost;
+    public bool lost;
     
     [SerializeField] float jumpForce;
     [SerializeField] float rotationAmount;
@@ -45,9 +45,12 @@ public class NotDuck : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        gameOverObject.SetActive(true);
-        lost = true;
+        if (other.gameObject.name is "Ground" or "PipeTop" or "PipeBottom")
+        {
+            gameOverObject.SetActive(true);
+            lost = true;
+        }
     }
 }
