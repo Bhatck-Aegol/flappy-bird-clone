@@ -9,13 +9,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject source, pipes;
     [SerializeField] private float interval;
 
-    private bool started, first = true;
-    
-    // Start is called before the first frame update=
-    void Start()
-    {
-        
-    }
+    private bool _started, _first = true;
     
     // Update is called once per frame
     void Update()
@@ -23,14 +17,15 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             duck.SetActive(true);
-            started = true;
+            _started = true;
             Destroy(message);
         }
+        
 
-        if (started && first)
+        if (_started && _first)
         {
             InvokeRepeating("SpawnPipes", 0f, interval);
-            first = false;
+            _first = false;
         }
     }
 

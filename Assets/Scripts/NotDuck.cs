@@ -6,34 +6,34 @@ using Object = UnityEngine.Object;
 
 public class NotDuck : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private bool jumping;
+    private Rigidbody2D _rb;
+    private bool _jumping;
     public bool lost;
     
-    [SerializeField] float jumpForce;
-    [SerializeField] float rotationAmount;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float rotationAmount;
     
-    [SerializeField] GameObject gameOverObject;
+    [SerializeField] private GameObject gameOverObject;
     
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
     
         //TODO: do better
-        jumping = true; // After the start screen jump
+        _jumping = true; // After the start screen jump
     }
 
     private void FixedUpdate()
     {
-        if (jumping && !lost) 
+        if (_jumping && !lost) 
         {
-            rb.velocity = Vector2.up * jumpForce;
-            jumping = false;
+            _rb.velocity = Vector2.up * jumpForce;
+            _jumping = false;
         } 
         
         // Update notDuck rotation
-        rb.rotation = rb.velocity.y * rotationAmount;
+        _rb.rotation = _rb.velocity.y * rotationAmount;
     }
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class NotDuck : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && !lost)
         {
-            jumping = true;
+            _jumping = true;
         }
     }
 
