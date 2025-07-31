@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
 public class NotDuck : MonoBehaviour
@@ -9,6 +10,7 @@ public class NotDuck : MonoBehaviour
     private Rigidbody2D _rb;
     private bool _jumping;
     public bool lost;
+    public UnityEvent onLost;
     
     [SerializeField] private float jumpForce;
     [SerializeField] private float rotationAmount;
@@ -51,6 +53,8 @@ public class NotDuck : MonoBehaviour
         {
             gameOverObject.SetActive(true);
             lost = true;
+            
+            onLost?.Invoke();
         }
     }
 }

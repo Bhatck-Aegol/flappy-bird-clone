@@ -764,7 +764,7 @@ MonoBehaviour:
   message: {fileID: 1115526504}
   duck: {fileID: 1942645674}
   source: {fileID: 1308155482}
-  pipes: {fileID: 3502918200449724147, guid: d9d59d5cc1f8a1d4aa8954df7021b3be, type: 3}
+  pipesPrefab: {fileID: 3502918200449724147, guid: d9d59d5cc1f8a1d4aa8954df7021b3be, type: 3}
   interval: 1.5
 --- !u!4 &1766878507
 Transform:
@@ -908,6 +908,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lost: 0
+  onLost:
+    m_PersistentCalls:
+      m_Calls: []
   jumpForce: 15
   rotationAmount: 2
   gameOverObject: {fileID: 129918756}

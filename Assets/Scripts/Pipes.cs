@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class Pipes : MonoBehaviour
 {
-    [SerializeField] private float speed;
-
+    [SerializeField] public float speed;
+    
     // Update is called once per frame
     void Update()
     {
