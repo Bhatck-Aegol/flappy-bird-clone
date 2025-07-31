@@ -11,6 +11,9 @@ public class NotDuck : MonoBehaviour
     private Rigidbody2D _rb;
     private bool _jumping;
     private bool _firstCollision = true;
+    
+    private int _score;
+    
     public bool lost;
     public UnityEvent onLost;
     
@@ -51,6 +54,7 @@ public class NotDuck : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        // on hitting the ground or the pipes
         if (other.gameObject.name is "Ground" or "PipeTop" or "PipeBottom" && _firstCollision)
         {
             gameOverObject.SetActive(true);
@@ -58,15 +62,29 @@ public class NotDuck : MonoBehaviour
             
             onLost?.Invoke();
             
-            // unfreeze duck's x position and add some force
+            // unfreeze duck's x position
             _rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
             
+            // add random force upwards and to the sides
             _rb.AddForce(new Vector2(
                 (float) Random.Range(-200, 200) / 10,
-                50),
+                25),
                 ForceMode2D.Impulse);
 
+            // don't do this again
             _firstCollision = false;
+            
+            // kinda hacky but it works
+            GetComponent<Animator>().enabled = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.name.Contains("Pipes"))
+        {
+            _score++;
+            Debug.Log(_score);
         }
     }
 }
