@@ -45,8 +45,6 @@ public class GameController : MonoBehaviour
     void OnLost()
     {
         StopPipes();
-        
-        
     }
 
     void SpawnPipes()
