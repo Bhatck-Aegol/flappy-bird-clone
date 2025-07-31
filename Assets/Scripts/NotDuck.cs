@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class NotDuck : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private bool _jumping;
+    private bool _firstCollision = true;
     public bool lost;
     public UnityEvent onLost;
     
@@ -49,12 +51,22 @@ public class NotDuck : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name is "Ground" or "PipeTop" or "PipeBottom")
+        if (other.gameObject.name is "Ground" or "PipeTop" or "PipeBottom" && _firstCollision)
         {
             gameOverObject.SetActive(true);
             lost = true;
             
             onLost?.Invoke();
+            
+            // unfreeze duck's x position and add some force
+            _rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+            
+            _rb.AddForce(new Vector2(
+                (float) Random.Range(-200, 200) / 10,
+                50),
+                ForceMode2D.Impulse);
+
+            _firstCollision = false;
         }
     }
 }
