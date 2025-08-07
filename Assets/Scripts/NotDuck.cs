@@ -20,8 +20,6 @@ public class NotDuck : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float rotationAmount;
     
-    [SerializeField] private GameObject gameOverObject;
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +55,6 @@ public class NotDuck : MonoBehaviour
         // on hitting the ground or the pipes
         if (other.gameObject.name is "Ground" or "PipeTop" or "PipeBottom" && _firstCollision)
         {
-            gameOverObject.SetActive(true);
             lost = true;
             
             onLost?.Invoke();
@@ -81,10 +78,9 @@ public class NotDuck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name.Contains("Pipes"))
+        if (other.CompareTag("Score"))
         {
-            _score++;
-            Debug.Log(_score);
+            GameController.instance.IncreaseScore(1);
         }
     }
 }

@@ -4,23 +4,46 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private GameObject message, duck;
+    [SerializeField] private GameObject message, duck, gameOverObject;
 
     [SerializeField] private GameObject source;
     [SerializeField] private GameObject pipesPrefab;
     [SerializeField] private float interval;
 
+    [SerializeField] private Text scoreText;
+    
     // list of all the created pipe instances
     private List<GameObject> _pipes = new List<GameObject>();
+
+    public static GameController instance;
     
-    private bool _started = false;
+    private bool _started;
+    private int score;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            // no two game controllers
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
+        score = 0;
+        _started = false;
+        
         duck.GetComponent<NotDuck>().onLost.AddListener(OnLost);
         
         InvokeRepeating("SpawnPipes", 0f, interval);
@@ -38,12 +61,14 @@ public class GameController : MonoBehaviour
     void StartGame()
     {
         duck.SetActive(true);
+        scoreText.enabled = true;
         _started = true;
         Destroy(message);
     }
 
     void OnLost()
     {
+        gameOverObject.SetActive(true);
         StopPipes();
     }
 
@@ -69,5 +94,13 @@ public class GameController : MonoBehaviour
             // stop spawning pipes
             CancelInvoke();
         }
+    }
+
+    // ReSharper disable once ParameterHidesMember
+    public void IncreaseScore(int score)
+    {
+        this.score += score;
+        scoreText.text = this.score.ToString();
+        Debug.Log("Score: " + this.score);
     }
 }
