@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     
     private bool _started;
-    private int score;
+    private int _score;
 
     void Awake()
     {
@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        score = 0;
+        _score = 0;
         _started = false;
         
         duck.GetComponent<NotDuck>().onLost.AddListener(OnLost);
@@ -99,8 +99,13 @@ public class GameController : MonoBehaviour
     // ReSharper disable once ParameterHidesMember
     public void IncreaseScore(int score)
     {
-        this.score += score;
-        scoreText.text = this.score.ToString();
-        Debug.Log("Score: " + this.score);
+        this._score += score;
+        scoreText.text = this._score.ToString();
+        Debug.Log("Score: " + this._score);
+    }
+
+    public int GetScore()
+    {
+        return _score;
     }
 }

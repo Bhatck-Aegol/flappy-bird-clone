@@ -11,6 +11,7 @@ public class NotDuck : MonoBehaviour
     private Rigidbody2D _rb;
     private bool _jumping;
     private bool _firstCollision = true;
+    private bool _firstGroundColision = true;
     
     private int _score;
     
@@ -19,6 +20,8 @@ public class NotDuck : MonoBehaviour
     
     [SerializeField] private float jumpForce;
     [SerializeField] private float rotationAmount;
+    
+    [SerializeField] private AudioClip jumpSound, hitSound, scoredSound, dieSound;
     
     // Start is called before the first frame update
     void Start()
@@ -31,8 +34,9 @@ public class NotDuck : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_jumping && !lost) 
+        if (_jumping && !lost)
         {
+            AudioController.instance.PlayAudio(jumpSound);
             _rb.velocity = Vector2.up * jumpForce;
             _jumping = false;
         } 
@@ -52,9 +56,21 @@ public class NotDuck : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.name == "Ground" && _firstGroundColision)
+        {
+            AudioController.instance.PlayAudio(dieSound);
+            _firstGroundColision = false;
+        }
+        
+        if (other.gameObject.name is "PipeTop" or "PipeBottom")
+        {
+            AudioController.instance.PlayAudio(hitSound);
+        }
+        
         // on hitting the ground or the pipes
         if (other.gameObject.name is "Ground" or "PipeTop" or "PipeBottom" && _firstCollision)
         {
+
             lost = true;
             
             onLost?.Invoke();
@@ -78,8 +94,9 @@ public class NotDuck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Score"))
+        if (other.CompareTag("Score") && !lost)
         {
+            AudioController.instance.PlayAudio(scoredSound);
             GameController.instance.IncreaseScore(1);
         }
     }
