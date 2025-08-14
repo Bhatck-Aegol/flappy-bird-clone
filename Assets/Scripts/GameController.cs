@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour
     void StartGame()
     {
         duck.SetActive(true);
-        scoreText.enabled = true;
+        scoreText.gameObject.SetActive(true);
         _started = true;
         Destroy(message);
     }
